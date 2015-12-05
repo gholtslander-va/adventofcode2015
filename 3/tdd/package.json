@@ -1,0 +1,11 @@
+{
+  "name": "advent3tdd",
+  "version": "1.0.0",
+  "description": "Stuff",
+  "main": "advent3tdd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

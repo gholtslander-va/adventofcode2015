@@ -1,0 +1,11 @@
+{
+  "name": "Advent of Code, Ghostlander edition",
+  "version": "1.0.0",
+  "description": "See http://adventofcode.com/ for more details on the challenge!",
+  "main": "",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "gholtslander-va",
+  "license": "ISC"
+}
