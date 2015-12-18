@@ -69,3 +69,88 @@ After 4 steps, this example has four lights on.
 In your grid of 100x100 lights, given your initial configuration, how many lights are on after 100 steps?
 """
 
+
+def get_initial_grid():
+    lights = []
+    with open('./testinput.txt') as fi:
+        for line in fi.readlines():
+            light_row = []
+            for light in list(line):
+                if light == '.':
+                    light_row.append(0)
+                elif light == '#':
+                    light_row.append(1)
+            lights.append(light_row)
+
+    return lights
+
+
+def count_neighbors_that_are_on(grid, starting_row, starting_col):
+    # check around it, and turn it off or leave it on according to our rules
+    neighbors_on = 0
+    for k in range(-1, 2):
+        for l in range(-1, 2):
+            try:
+                if any([starting_row + k == 0 and starting_col + l == 0,
+                        starting_row + k == 0 and starting_col + l == len(grid[starting_row]) - 1,
+                        starting_row + k == len(grid) - 1 and starting_col + l == 0,
+                        starting_row + k == len(grid) - 1 and starting_col + l == len(grid[starting_row]) - 1
+                        ]):
+                    neighbors_on += 1
+                elif not any([starting_row + k < 0,
+                              starting_col + l < 0,
+                              starting_row + k > len(grid),
+                              starting_col + l > len(grid[starting_row]),
+                              k == 0 and l == 0
+                              ]):
+                    # print grid[starting_row + k][starting_col + l]
+                    neighbors_on += grid[starting_row + k][starting_col + l]
+            except IndexError:
+                pass
+
+    # print '[%s][%s]' % (starting_row, starting_col), 'has %s neighbors on' % neighbors_on
+    return neighbors_on
+
+
+def compute_step(grid):
+    next_step = []
+    for i in range(len(grid)):
+        next_step.append([])
+        for j in range(len(grid[i])):
+            is_on = grid[i][j] == 1
+            # print i, j, 'is on:', is_on
+            neighbors_on = count_neighbors_that_are_on(grid, i, j)
+            if any([i == 0 and j == 0,
+                    i == 0 and j == len(grid) - 1,
+                    i == len(grid) - 1 and j == 0,
+                    i == len(grid) - 1 and j == len(grid[i]) - 1
+                    ]):
+                next_step[i].append(1)
+            else:
+                if is_on:
+                    # print '  it should stay on:', any([neighbors_on == 2, neighbors_on == 3])
+                    next_step[i].append(0 if not any([neighbors_on == 2, neighbors_on == 3]) else 1)
+                else:
+                    # print '  it should stay off:', neighbors_on != 3
+                    next_step[i].append(1 if neighbors_on == 3 else 0)
+
+    return next_step
+
+
+def print_grid(grid):
+    for line in grid:
+        print line
+
+
+def sum_grid(grid):
+    return sum([sum(line) for line in grid])
+
+
+def iterate_grid(the_grid, iterations):
+    for i in range(iterations):
+        the_grid = compute_step(the_grid)
+    print sum_grid(the_grid)
+
+
+the_grid = get_initial_grid()
+iterate_grid(the_grid, 100)
