@@ -57,4 +57,4 @@ module.exports = {
   'findRegexesInString': findRegexesInString,
   'findVowelsInString': findVowelsInString,
   'parseRegexes': parseRegexes
-}
+};
